@@ -56,17 +56,22 @@ angular.module('melodigeniAppApp')
         }
 
         function getCheckNumber(answers, originalYear) {
+            originalYear = parseInt(originalYear);
             var tempNumber = Math.floor((Math.random()*10)-5);
-            var tempYear = originalYear + tempNumber;
-            var year = new Date().getFullYear();
+            var tempYear = parseInt(originalYear + tempNumber);
+            var year = parseInt(new Date().getFullYear());
 
-            if (tempYear > new Date().getFullYear() || tempYear === originalYear) {
+            if (tempYear > new Date().getFullYear()) {
+                getCheckNumber()
+            }
+
+            if (tempYear === originalYear) {
                 getCheckNumber()
             }
 
             if (typeof answers !== 'undefined' && answers.length > 0) {
                 for (var i = 0; i < answers.length; i++) {
-                    if (answers[i].text === tempYear) {
+                    if (parseInt(answers[i].text) === tempYear) {
                         getCheckNumber();
                     }
                 }
