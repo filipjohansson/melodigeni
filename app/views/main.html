@@ -1,0 +1,42 @@
+<div class="questions" ng-if="currentChannel">
+    <div class="header" style="background: #{{ currentChannel.color }}">
+        <p>Du lyssnar på:<img ng-src="{{ currentChannel.image }}" class="channel-logo" alt="{{ currentChannel.name }}"></p>
+    </div>
+    <div ng-if="!currentlyPlaying.artist">
+        <div class="container">
+            <div class="row question">
+                Just nu spelar {{ currentChannel.name }} ingen musik.
+            </div>
+        </div>
+    </div>
+    <div ng-if="currentlyPlaying.artist">
+        Just nu spelas: {{ currentlyPlaying }} på {{ currentChannel.name }}
+        <div class="container">
+            <div class="row question">
+                {{ question.question }}
+            </div>
+            <div class="row answer" ng-repeat="answer in question.answers" ng-click="checkAnswer(answer)" ng-class="answer.selected ? (answer.correct ? 'correct' : 'wrong') : ''">
+                <div class="ng-col-xs-12" ng-if="answer.text">
+                    {{ answer.text }}
+                </div>
+                <div class="ng-col-xs-12" ng-if="answer.image">
+                    <img ng-src="{{ answer.image }}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" ng-if="!currentChannel">
+    <div class="row">
+        <div class="col-xs-12 intro">
+            <img src="" alt="Melodigeni">
+            <p>Musikquiz i direktsändning.<br>
+            <strong>Vilken kanal lyssnar du på just nu?</strong></p>
+        </div>
+    </div>
+    <div class="row channel-list">
+        <div class="col-xs-4" ng-repeat="channel in channels.channels" ng-if="channel.image" ng-click="selectChannel(channel)">
+            <img ng-src="{{ channel.image }}" alt="{{ channel.name }}">
+        </div>
+    </div>
+</div>
