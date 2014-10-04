@@ -55,34 +55,26 @@ angular.module('melodigeniAppApp')
             currentQuestion++;
         }
 
-        function getCheckNumber(answers, originalYear) {
+        var alreadyRandomizedNumbers = [];
+
+        function getRandomYear(answers, originalYear) {
             originalYear = parseInt(originalYear);
             var tempNumber = Math.floor((Math.random()*10)-5);
             var tempYear = parseInt(originalYear + tempNumber);
             var year = parseInt(new Date().getFullYear());
 
-            if (tempYear > new Date().getFullYear()) {
-                getCheckNumber()
+            if (!!~alreadyRandomizedNumbers.indexOf(tempYear) || tempYear == year || tempYear == originalYear) {
+                console.log('Trying again');
+                return getRandomYear(answers, originalYear);
             }
 
-            if (tempYear === originalYear) {
-                getCheckNumber()
-            }
+            alreadyRandomizedNumbers.push(tempYear);
 
-            if (typeof answers !== 'undefined' && answers.length > 0) {
-                for (var i = 0; i < answers.length; i++) {
-                    if (parseInt(answers[i].text) === tempYear) {
-                        getCheckNumber();
-                    }
-                }
-            }
-
-            return tempNumber;
+            return tempYear;
         }
 
         function generateQuestion(type, data) {
             if (type === 'artistName') {
-                console.log('Trying to create a question with artist names.');
                 var answers = new Array();
                 answers.push({
                     'text' : data.artist.name,
@@ -115,9 +107,8 @@ angular.module('melodigeniAppApp')
                 });
 
                 for (var i = 0; i <= 2; i++) {
-                    var tempNumber = getCheckNumber(answers, data.artist.bio.yearformed);
                     answers.push({
-                        'text' : parseInt(data.artist.bio.yearformed) + tempNumber,
+                        'text' : getRandomYear(answers, data.artist.bio.yearformed),
                         'correct' : false
                     })
                 }
