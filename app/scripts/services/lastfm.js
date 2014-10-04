@@ -9,8 +9,8 @@
  */
 angular.module('melodigeniAppApp')
     .service('lastfm', function lastfm($q, $http) {
+        // Please be nice to my API key
         var key ='b3786a8ea8b3e571d0c6415b8b723c49';
-        // var secret = '3c852c9b81a701b06803f7807f95fbc6';
 
         function callLastFM(url) {
             var d = $q.defer();
