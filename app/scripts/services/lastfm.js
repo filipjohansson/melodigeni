@@ -25,7 +25,7 @@ angular.module('melodigeniAppApp')
 
             $http.jsonp(url).success(function(r) {
                 result = r;
-                console.info(r);
+                // console.info(r);
                 d.resolve(r);
             });
 
