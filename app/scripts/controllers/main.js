@@ -8,7 +8,7 @@
  * Controller of the melodigeniAppApp
  */
 angular.module('melodigeniAppApp')
-    .controller('MainCtrl', function ($scope, $location, sr, lastfm) {
+    .controller('MainCtrl', function ($scope, $location, $sce, sr, lastfm) {
         var currentQuestion = 0;
 
         sr.getChannels().then(function(r) {
@@ -45,9 +45,34 @@ angular.module('melodigeniAppApp')
                     console.log('Artist info: ', r);
                     generateQuestion('artistImage', r);
                 });
+            } else if (currentQuestion == 3) {
+                lastfm.getArtistInfo($scope.currentlyPlaying.artist).then(function(r) {
+                    console.log('Artist info: ', r);
+                    $scope.artistResult = r;
+                });
             }
 
             currentQuestion++;
+        }
+
+        function getCheckNumber(answers, originalYear) {
+            var tempNumber = Math.floor((Math.random()*10)-5);
+            var tempYear = originalYear + tempNumber;
+            var year = new Date().getFullYear();
+
+            if (tempYear > new Date().getFullYear() || tempYear === originalYear) {
+                getCheckNumber()
+            }
+
+            if (typeof answers !== 'undefined' && answers.length > 0) {
+                for (var i = 0; i < answers.length; i++) {
+                    if (answers[i].text === tempYear) {
+                        getCheckNumber();
+                    }
+                }
+            }
+
+            return tempNumber;
         }
 
         function generateQuestion(type, data) {
@@ -58,7 +83,6 @@ angular.module('melodigeniAppApp')
                     'text' : data.artist.name,
                     'correct' : true
                 });
-                // console.log('Related', data.artist.similar);
                 for (var i = 0; i <= 2; i++) {
                     answers.push({
                         'text' : data.artist.similar.artist[i].name,
@@ -75,6 +99,10 @@ angular.module('melodigeniAppApp')
             } else if (type === 'yearFormed') {
                 console.log('Year formed', data.artist.bio.yearformed);
 
+                if (typeof data.artist.bio.yearformed === 'undefined') {
+                    getNextQuestion();
+                }
+
                 var answers = new Array();
                 answers.push({
                     'text' : data.artist.bio.yearformed,
@@ -82,8 +110,9 @@ angular.module('melodigeniAppApp')
                 });
 
                 for (var i = 0; i <= 2; i++) {
+                    var tempNumber = getCheckNumber(answers, data.artist.bio.yearformed);
                     answers.push({
-                        'text' : parseInt(data.artist.bio.yearformed) + Math.floor((Math.random()*10)-5),
+                        'text' : parseInt(data.artist.bio.yearformed) + tempNumber,
                         'correct' : false
                     })
                 }
@@ -110,7 +139,7 @@ angular.module('melodigeniAppApp')
                 console.log('Suffled answers', shuffle(answers));
 
                 $scope.question = {
-                    'question' : 'Vad heter artisten?',
+                    'question' : 'Hur ser ' + $scope.currentlyPlaying.artist + ' ut?',
                     'answers' : shuffle(answers)
                 };
             }
@@ -138,5 +167,13 @@ angular.module('melodigeniAppApp')
                 console.info('Fel svar!');
             }
             $scope.question.answers[$scope.question.answers.indexOf(answer)].selected = true;
+        }
+
+        $scope.renderHtml = function(html) {
+            return $sce.trustAsHtml(html);
+        };
+
+        $scope.reloadPage = function() {
+            window.location.reload();
         }
 });
