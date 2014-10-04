@@ -32,22 +32,22 @@ angular.module('melodigeniAppApp')
         function getNextQuestion() {
             if (currentQuestion == 0) {
                 lastfm.getArtistInfo($scope.currentlyPlaying.artist).then(function(r) {
-                    console.log('Artist info: ', r);
+                    // console.log('Artist info: ', r);
                     generateQuestion('artistName', r);
                 });
             } else if (currentQuestion == 1) {
                 lastfm.getArtistInfo($scope.currentlyPlaying.artist).then(function(r) {
-                    console.log('Artist info: ', r);
+                    // console.log('Artist info: ', r);
                     generateQuestion('yearFormed', r);
                 });
             } else if (currentQuestion == 2) {
                 lastfm.getArtistInfo($scope.currentlyPlaying.artist).then(function(r) {
-                    console.log('Artist info: ', r);
+                    // console.log('Artist info: ', r);
                     generateQuestion('artistImage', r);
                 });
             } else if (currentQuestion == 3) {
                 lastfm.getArtistInfo($scope.currentlyPlaying.artist).then(function(r) {
-                    console.log('Artist info: ', r);
+                    // console.log('Artist info: ', r);
                     $scope.artistResult = r;
                 });
             }
@@ -64,7 +64,7 @@ angular.module('melodigeniAppApp')
             var year = parseInt(new Date().getFullYear());
 
             if (!!~alreadyRandomizedNumbers.indexOf(tempYear) || tempYear == year || tempYear == originalYear) {
-                console.log('Trying again');
+                // console.log('Trying again');
                 return getRandomYear(answers, originalYear);
             }
 
@@ -86,15 +86,15 @@ angular.module('melodigeniAppApp')
                         'correct' : false
                     })
                 }
-                console.log('answers', answers);
-                console.log('Suffled answers', shuffle(answers));
+                // console.log('answers', answers);
+                // console.log('Suffled answers', shuffle(answers));
 
                 $scope.question = {
                     'question' : 'Vad heter artisten?',
                     'answers' : shuffle(answers)
                 };
             } else if (type === 'yearFormed') {
-                console.log('Year formed', data.artist.bio.yearformed);
+                // console.log('Year formed', data.artist.bio.yearformed);
 
                 if (typeof data.artist.bio.yearformed === 'undefined') {
                     getNextQuestion();
@@ -118,7 +118,7 @@ angular.module('melodigeniAppApp')
                     'answers' : shuffle(answers)
                 };
             } else if (type === 'artistImage') {
-                console.log('Trying to create a question with artist images.');
+                // console.log('Trying to create a question with artist images.');
                 var answers = new Array();
                 answers.push({
                     'image' : data.artist.image[4]['#text'],
@@ -131,8 +131,8 @@ angular.module('melodigeniAppApp')
                         'correct' : false
                     })
                 }
-                console.log('answers', answers);
-                console.log('Suffled answers', shuffle(answers));
+                // console.log('answers', answers);
+                // console.log('Suffled answers', shuffle(answers));
 
                 $scope.question = {
                     'question' : 'Hur ser ' + $scope.currentlyPlaying.artist + ' ut?',
@@ -145,7 +145,7 @@ angular.module('melodigeniAppApp')
         $scope.selectChannel = function(channel) {
             $scope.currentChannel = channel;
             sr.getCurrentlyPlaying(channel.id).then(function(r) {
-                console.log('Currently:', r.playlist.song);
+                // console.log('Currently:', r.playlist.song);
                 $scope.currentlyPlaying = {};
                 // $scope.currentlyPlaying = r.playlist.song.artist + ' - ' + r.playlist.song.title;
                 $scope.currentlyPlaying.artist = r.playlist.song.artist;
