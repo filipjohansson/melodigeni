@@ -41,8 +41,9 @@
         </div>
     </div>
     <div class="row channel-list">
-        <div class="col-xs-4" ng-repeat="channel in channels.channels" ng-if="channel.image" ng-click="selectChannel(channel)">
+        <div class="col-xs-4 col-sm-3 col-lg-2" ng-repeat="channel in channels.channels" ng-if="channel.image" ng-click="selectChannel(channel)">
             <img ng-src="{{ channel.image }}" alt="{{ channel.name }}">
         </div>
     </div>
 </div>
+<p class="credits">Skapad av <a href="http://www.annikabackstrom.se" target="_blank">Annika</a> och <a href="http://www.filipjohansson.se" target="_blank">Filip</a> under <a href="http://www.hackaway.com" target="_blank">Hackaway #2</a>.</p>
