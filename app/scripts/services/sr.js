@@ -33,7 +33,7 @@ angular.module('melodigeniAppApp')
             getChannels: function() {
                 var d = $q.defer();
 
-                callSR('http://api.sr.se/api/v2/channels').then(function(r) {
+                callSR('https://api.sr.se/api/v2/channels').then(function(r) {
                     d.resolve(r);
                 });
 
@@ -42,7 +42,7 @@ angular.module('melodigeniAppApp')
             getCurrentlyPlaying: function(id) {
                 var d = $q.defer();
 
-                callSR('http://api.sr.se/api/v2/playlists/rightnow?channelid=' + id).then(function(r) {
+                callSR('https://api.sr.se/api/v2/playlists/rightnow?channelid=' + id).then(function(r) {
                     d.resolve(r);
                 });
 

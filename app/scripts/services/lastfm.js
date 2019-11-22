@@ -36,7 +36,7 @@ angular.module('melodigeniAppApp')
             getArtistInfo: function(artist) {
                 var d = $q.defer();
 
-                callLastFM('http://ws.audioscrobbler.com/2.0/?method=artist.getInfo&artist=' + artist).then(function(r) {
+                callLastFM('https://ws.audioscrobbler.com/2.0/?method=artist.getInfo&artist=' + artist).then(function(r) {
                     d.resolve(r);
                 });
 
